@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * Миграция создает запись на игры
+ * Class CreateTeamGameRecordsTable
+ */
 class CreateTeamGameRecordsTable extends Migration
 {
     /**
