@@ -25,6 +25,7 @@ class CreateGameTeamsTable extends Migration
             $table->string('name');
             $table->string('rank')->default('Новички');
             $table->integer('rating')->default(1);
+            $table->integer('total_score')->default(0);
             $table->foreign('user_id_admin')->references('id')->on('users');
         });
     }
