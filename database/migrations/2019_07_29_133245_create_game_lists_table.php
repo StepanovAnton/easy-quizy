@@ -21,12 +21,12 @@ class CreateGameListsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->dateTime('start_game'); // Дата начала игры
-            $table->string('location'); // Месторасположение
-            $table->boolean('reserve'); // Флаг есть ли месста
+            $table->string('latitude'); // Широта
+            $table->string('longitude'); // Долгота
+            $table->boolean('reserve')->default(1); // Флаг есть ли места
             $table->integer('price'); // Стоимость игры
-            $table->string('label'); // Лейбл
-            $table->string('venue'); // Место проведения игры
-            $table->string('payment_type'); // Тип оплаты
+            $table->string('label')->default('Classic'); // Лейбл
+            $table->string('place'); // Место проведения игры
         });
     }
 
