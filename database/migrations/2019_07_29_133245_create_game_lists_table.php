@@ -17,7 +17,7 @@ class CreateGameListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_lists', function (Blueprint $table) {
+        Schema::create('games_list', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->dateTime('start_game'); // Дата начала игры

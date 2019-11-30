@@ -17,7 +17,7 @@ class CreateTeamGameRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('team_game_records', function (Blueprint $table) {
+        Schema::create('game_records', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->boolean('solo');
@@ -28,8 +28,8 @@ class CreateTeamGameRecordsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('game_id');
             $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('game_teams');
-            $table->foreign('game_id')->references('id')->on('game_lists');
+            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('game_id')->references('id')->on('games_list');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

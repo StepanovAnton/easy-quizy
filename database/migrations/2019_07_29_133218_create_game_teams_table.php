@@ -17,7 +17,7 @@ class CreateGameTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id_admin');
             $table->timestamps();
@@ -27,6 +27,11 @@ class CreateGameTeamsTable extends Migration
             $table->integer('rating')->default(1);
             $table->integer('total_score')->default(0);
             $table->foreign('user_id_admin')->references('id')->on('users');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 
