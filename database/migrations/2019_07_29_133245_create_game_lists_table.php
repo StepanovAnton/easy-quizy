@@ -20,6 +20,7 @@ class CreateGameListsTable extends Migration
         Schema::create('games_list', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->string('name'); // Название игры
             $table->dateTime('start_game'); // Дата начала игры
             $table->string('latitude'); // Широта
             $table->string('longitude'); // Долгота
