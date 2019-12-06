@@ -18,7 +18,7 @@ class CreateGameListsTable extends Migration
     public function up()
     {
         Schema::create('games_list', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->timestamps();
             $table->dateTime('start_game'); // Дата начала игры
             $table->string('latitude'); // Широта
@@ -37,6 +37,7 @@ class CreateGameListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_lists');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('games_list');
     }
 }

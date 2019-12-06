@@ -18,11 +18,11 @@ class CreateGameTeamsTable extends Migration
     public function up()
     {
         Schema::create('teams', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id_admin');
+            $table->increments('id');
+            $table->integer('user_id_admin')->unsigned();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('rank')->default('Новички');
             $table->integer('rating')->default(1);
             $table->integer('total_score')->default(0);
@@ -30,7 +30,7 @@ class CreateGameTeamsTable extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('team_id');
+            $table->integer('team_id')->unsigned()->nullable();
             $table->foreign('team_id')->references('id')->on('teams');
         });
     }
@@ -42,6 +42,7 @@ class CreateGameTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_teams');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('teams');
     }
 }
