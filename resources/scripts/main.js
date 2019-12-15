@@ -270,5 +270,4 @@ for (let i = 0; i < datePhone.length; i += 1) {
   });
 }
 
-
-require.context('../../assets/images', true, /\.(png|jpe?g|gif)$/);
+require.context('../images', true, /\.(png|jpe?g|gif)$/);
