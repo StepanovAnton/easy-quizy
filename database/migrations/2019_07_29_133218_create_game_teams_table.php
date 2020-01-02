@@ -28,11 +28,6 @@ class CreateGameTeamsTable extends Migration
             $table->integer('total_score')->default(0);
             $table->foreign('user_id_admin')->references('id')->on('users');
         });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('team_id')->unsigned()->nullable();
-            $table->foreign('team_id')->references('id')->on('teams');
-        });
     }
 
     /**
