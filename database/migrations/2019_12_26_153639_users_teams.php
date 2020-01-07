@@ -13,14 +13,21 @@ class UsersTeams extends Migration
      */
     public function up()
     {
-        Schema::create('users_teams', function (Blueprint $table) {
+        Schema::create('external_users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
+            $table->string('surname');
+        });
+
+        Schema::create('team_user', function (Blueprint $table) {
+            $table->integer('team_id')->unsigned()->index();
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
+
             $table->integer('user_id')->unsigned()->nullable();
-            $table->integer('team_id')->unsigned()->nullable();
-            $table->integer('user_name')->nullable();
-            $table->integer('user_surname')->nullable();
-            $table->foreign('team_id')->references('id')->on('teams');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->integer('external_user_id')->unsigned()->nullable();
+            $table->foreign('external_user_id')->references('id')->on('external_users')->onDelete('cascade');
         });
     }
 
@@ -31,6 +38,8 @@ class UsersTeams extends Migration
      */
     public function down()
     {
-        //
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('external_users');
+        Schema::dropIfExists('team_user');
     }
 }

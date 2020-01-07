@@ -19,14 +19,12 @@ class CreateGameTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id_admin')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->string('name')->unique();
             $table->string('rank')->default('Новички');
             $table->integer('rating')->default(1);
             $table->integer('total_score')->default(0);
-            $table->foreign('user_id_admin')->references('id')->on('users');
         });
     }
 
