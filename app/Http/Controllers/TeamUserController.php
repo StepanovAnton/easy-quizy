@@ -35,8 +35,6 @@ class TeamUserController extends Controller
      */
     public function store(Request $request)
     {
-//        $request->route('teamID');
-//        dd($request->get('user-email'));
         $this->validator($request->all())->validate();
 
         if ($request->get('externalUser-name')) {
