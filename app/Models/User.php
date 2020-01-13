@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -11,12 +12,12 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Атрибуты, для которых разрешено массовое назначение.
      *
      * @var array
      */
     protected $fillable = [
-        'firstName', 'email', 'password', 'phoneNumber'
+        'firstName', 'email', 'password', 'phoneNumber',
     ];
 
     /**
@@ -25,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'lastName', 'city', 'dateOfBirth', 'gender', 'lastName'
+        'password', 'remember_token', 'lastName', 'city', 'dateOfBirth', 'gender', 'lastName',
     ];
 
     /**
@@ -36,4 +37,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Получаем команду пользователя
+     *
+     * @return BelongsToMany
+     */
+    public function team()
+    {
+        return $this->belongsToMany('App\Models\Team', 'team_user', 'user_id', 'team_id');
+    }
+
+    /**
+     * Проверяет является ли пользователь администратором команды
+     */
+    public function teamOwner()
+    {
+        $authUserID = \Auth::user()->id;
+        $teamOwner = $this->belongsToMany('App\Models\Team', 'team_user', 'user_id', 'team_id')->first()->users->where('team_admin', true)->where('id', $authUserID)->count();
+        return $teamOwner === 1 ? true : false;
+    }
 }

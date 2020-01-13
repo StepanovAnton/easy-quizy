@@ -109,6 +109,7 @@
         background-color: $color-white;
         margin-bottom: calculateRem(6px);
         counter-increment: number;
+        position: relative;
 
         @include desktop {
             padding: calculateRem(12px) calculateRem(28px) calculateRem(12px) calculateRem(48px);
@@ -338,10 +339,6 @@
     }
 
     @at-root #{&}__options {
-        @include min-tablet {
-            display: none;
-        }
-
         @include tablet {
             position: absolute;
             display: block;

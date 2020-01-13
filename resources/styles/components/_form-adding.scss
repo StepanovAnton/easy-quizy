@@ -40,6 +40,30 @@
 
     }
 
+    @at-root #{&}__otherField {
+        display: block;
+        width: 100%;
+
+        @include min-mobile {
+            flex: 1 1 100%;
+            max-width: 100%;
+            padding-left: calculateRem(12px);
+            padding-right: calculateRem(12px);
+            margin-bottom: calculateRem(24px);
+
+            @include last-row(2) {
+                margin-bottom: 0;
+            }
+        }
+
+        @include mobile {
+            &:not(:last-child) {
+                margin-bottom: calculateRem(16px);
+            }
+        }
+
+    }
+
     @at-root #{&}__caption {
         display: block;
         font-size: calculateRem(16px);

@@ -33,7 +33,6 @@
 @include('include.footer.mobileMenu')
 
 
-
 <div class="modal modal--rules" id="modalRules">
     <div class="modal__dialog">
         <div class="modal__content">
@@ -283,44 +282,66 @@
     <div class="modal__underlay" data-close></div>
 </div>
 {{--shedule--}}
-
-<div class="modal modal--adding" id="modalAdding">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            <div class="modal__block">
-                <button type="button" class="modal__close" data-close></button>
-                <div class="modal__frame">
-                    <div class="modal__content">
-                        <p class="modal__title">Добавить игрока</p>
-                        <form class="form-adding">
-                            <div class="form-adding__fields">
-                                <div class="form-adding__field">
-                                    <span class="form-adding__caption">Имя</span>
-                                    <input id="modalAdding-firstName" required type="text" class="input"
-                                           placeholder="Введите имя"/>
+@if(Auth::user() &&\Auth::User()->teamOwner() === true)
+    <div class="modal modal--adding" id="modalAdding">
+        <div class="modal__dialog">
+            <div class="modal__content">
+                <div class="modal__block">
+                    <button type="button" class="modal__close" data-close></button>
+                    <div class="modal__frame">
+                        <div class="modal__content">
+                            <p class="modal__title">Добавить игрока</p>
+                            <form class="form-adding" method="post"
+                                  action="/team-user/{{\Auth::User()->team()->first()->id}}">
+                                @csrf
+                                <div class="form-adding__fields">
+                                    <div class="form-adding__field">
+                                        <span class="form-adding__caption">Имя</span>
+                                        <input name="externalUser-name" type="text" class="input"
+                                               placeholder="Введите имя"/>
+                                        @error('externalUser-name')
+                                        <p class="form__error">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-adding__field">
+                                        <span class="form-adding__caption">Фамилия</span>
+                                        <input name="externalUser-surname" type="text" class="input"
+                                               placeholder="Введите фамилию"/>
+                                        @error('externalUser-surname')
+                                        <p class="form__error">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="form-adding__field">
-                                    <span class="form-adding__caption">Фамилия</span>
-                                    <input id="modalAdding-secondName" required type="text" class="input"
-                                           placeholder="Введите фамилию"/>
+                                <div>
+                                    <p class="modal__title">Или добавить пользователя</p>
                                 </div>
-                            </div>
-                            <div class="form-adding__buttons">
-                                <button type="submit" class="button form-adding__button">
-                                    <span class="button__text">Сохранить</span>
-                                </button>
-                                <button type="button" class="button button--outline form-adding__button" data-close>
-                                    <span class="button__text">Отмена</span>
-                                </button>
-                            </div>
-                        </form>
+                                <div class="form-adding__fields">
+                                    <div class="form-adding__otherField">
+                                        <span class="form-adding__caption">E-mail пользователя</span>
+                                        <input type="email" class="input" name="user-email"
+                                               placeholder="Введите почту"/>
+                                        @error('user-email')
+                                        <p class="form__error">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-adding__buttons">
+                                    <button type="submit" class="button form-adding__button">
+                                        <span class="button__text">Сохранить</span>
+                                    </button>
+                                    <button type="button" class="button button--outline form-adding__button" data-close>
+                                        <span class="button__text">Отмена</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="modal__underlay" data-close></div>
     </div>
-    <div class="modal__underlay" data-close></div>
-</div>
+@endif
 
 <!-- Scripts -->
 <script src="{{ asset('js/main.js') }}" defer></script>

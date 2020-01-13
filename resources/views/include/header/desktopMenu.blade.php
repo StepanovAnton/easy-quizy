@@ -75,10 +75,27 @@
                 </div>
                 <a href="tel:+79373111125" class="header__link">+7 (937) 311-11-25</a>
             </div>
-            <div class="header__auth">
-                <a href="/auth/" class="header__link">Вход</a>
-                <a href="/registration/" class="header__link">Регистрация</a>
-            </div>
+
+            @if (Auth::user())
+                <div class="header__profile">
+                    <div class="profile-dropdown">
+                        <div class="profile-dropdown__avatar"
+                             style="background-image: url('/images/icon-header-user.svg');"></div>
+
+                        <button type="button"
+                                class="profile-dropdown__button">{{Auth::user()->firstName }} {{ Auth::user()->lastName }}</button>
+                        <div class="profile-dropdown__list">
+                            <a href="{{ Route('personal') }}" class="profile-dropdown__link">Настройки</a>
+                            <a href="{{ Route('logout') }}" class="profile-dropdown__link">Выйти</a>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="header__auth">
+                    <a href="/auth/" class="header__link">Вход</a>
+                    <a href="/registration/" class="header__link">Регистрация</a>
+                </div>
+            @endif
         </div>
     </div>
     <div class="header__bottom">
