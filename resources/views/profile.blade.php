@@ -33,11 +33,11 @@
                 </div>
                 <div class="profile__base">
                     <div class="profile__board">
-                        <div class="board" data-rank="1">
+                        <div class="board" data-rank="{{$team->rating}}">
                             <div class="board__inner">
                                 <div class="board__heading">
-                                    <p class="board__name">Название команды</p>
-                                    <p class="board__status">{{$team->name}}</p>
+                                    <p class="board__name">{{$team->name}}</p>
+                                    <p class="board__status">{{$team->rank}}</p>
                                 </div>
                                 <div class="board__stats">
                                     <div class="board__stat">
@@ -63,7 +63,9 @@
                         </div>
                     </div>
                     <div class="profile__team">
-                        <form class="team">
+                        <form class="team" action="/team/{{\Auth::User()->team()->first()->id}}/users" method="POST">
+                            @csrf
+                            @method('DELETE')
                             <div class="team__heading">
                                 <p class="team__title">Состав</p>
                             </div>
@@ -71,7 +73,6 @@
                             <div class="team__list">
                                 @foreach($users as $user)
                                     <div class="team__item" tabindex="0">
-
                                         <div class="team__player">
                                             <p class="team__name">{{$user->firstName . ' ' . $user->lastName}}</p>
                                         </div>
@@ -79,7 +80,9 @@
                                             <div class="team__options">
                                                 <button class="team__dots" type="button"></button>
                                                 <div class="team__plank">
-                                                    <button type="submit" class="team__option">Удалить</button>
+                                                    <button type="submit" name="delete" class="team__option">
+                                                        Удалить
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endif
@@ -98,7 +101,7 @@
                                                     <button type="button" class="team__option" data-modal="modalAdding">
                                                         Редактировать
                                                     </button>
-                                                    <button type="submit" class="team__option">Удалить</button>
+                                                    <button type="submit" class="team__option" name="deleteExternalUser" value="{{$externalUser->id}}">Удалить</button>
                                                 </div>
                                             </div>
                                         @endif

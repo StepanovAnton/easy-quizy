@@ -40,4 +40,5 @@ Route::post('vosstanovlenie-parolya/email', 'Auth\ForgotPasswordController@sendR
 Route::get('vosstanovlenie-parolya/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
 Route::post('vosstanovlenie-parolya/reset', 'Auth\ResetPasswordController@reset');
 //
-Route::post('/team-user/{teamID}', 'TeamUserController@store');
+Route::post('/team-user/{teamID}', 'TeamUserController@create');
+Route::delete('/team/{teamID}/users', 'TeamUserController@destroy');

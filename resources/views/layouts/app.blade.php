@@ -282,7 +282,7 @@
     <div class="modal__underlay" data-close></div>
 </div>
 {{--shedule--}}
-@if(Auth::user() &&\Auth::User()->teamOwner() === true)
+@if(Auth::user() && \Auth::User()->teamOwner() === true)
     <div class="modal modal--adding" id="modalAdding">
         <div class="modal__dialog">
             <div class="modal__content">
@@ -298,7 +298,7 @@
                                     <div class="form-adding__field">
                                         <span class="form-adding__caption">Имя</span>
                                         <input name="externalUser-name" type="text" class="input"
-                                               placeholder="Введите имя"/>
+                                               placeholder="Введите имя" value="{{old('externalUser-name')}}"/>
                                         @error('externalUser-name')
                                         <p class="form__error">{{ $message }}</p>
                                         @enderror
@@ -306,7 +306,7 @@
                                     <div class="form-adding__field">
                                         <span class="form-adding__caption">Фамилия</span>
                                         <input name="externalUser-surname" type="text" class="input"
-                                               placeholder="Введите фамилию"/>
+                                               placeholder="Введите фамилию" value="{{old('externalUser-surname')}}"/>
                                         @error('externalUser-surname')
                                         <p class="form__error">{{ $message }}</p>
                                         @enderror
@@ -319,7 +319,7 @@
                                     <div class="form-adding__otherField">
                                         <span class="form-adding__caption">E-mail пользователя</span>
                                         <input type="email" class="input" name="user-email"
-                                               placeholder="Введите почту"/>
+                                               placeholder="Введите почту" value="{{old('user-email')}}"/>
                                         @error('user-email')
                                         <p class="form__error">{{ $message }}</p>
                                         @enderror

@@ -14,6 +14,13 @@ class ExternalUser extends Model
     public $timestamps = false;
 
     /**
+     * Атрибуты, для которых разрешено массовое назначение.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'surname'];
+
+    /**
      * Получаем команду пользователя
      *
      * @return BelongsToMany

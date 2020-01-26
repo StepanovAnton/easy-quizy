@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\ExternalUser;
+use App\Models\TeamUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -20,11 +21,19 @@ class TeamUserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @param $teamID
+     * @return void
      */
-    public function create()
+    public function create(Request $request, $teamID)
     {
-        //
+        $this->validator($request->all())->validate();
+
+        if ($request->get('externalUser-name')) {
+            $externalUser = $this->createExternalUser($request->all());
+            $this->externalUserBinding($externalUser, $teamID);
+        }
+
+        return redirect('/personal/');
     }
 
     /**
@@ -35,16 +44,48 @@ class TeamUserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validator($request->all())->validate();
+    }
 
-        if ($request->get('externalUser-name')) {
-            $externalUser = new ExternalUser();
-            $externalUser->name = $request->get('externalUser-name');
-            $externalUser->surname = $request->get('externalUser-surname');
-            $externalUser->save();
-        }
+    /**
+     * Создать внешнего пользователя
+     * @param array $data
+     * @return mixed
+     */
+    public function createExternalUser(array $data)
+    {
+        return ExternalUser::create([
+            'name' => $data['externalUser-name'],
+            'surname' => $data['externalUser-surname'],
+        ]);
+    }
 
-        return redirect('/personal/');
+
+    /**
+     * Привязать внешнего пользователя к команде
+     * @param ExternalUser $user
+     * @param $teamID
+     * @return mixed
+     */
+    public function externalUserBinding(ExternalUser $user, $teamID)
+    {
+        return TeamUser::create([
+            'team_id' => (int)$teamID,
+            'external_user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Привязать внутреннего пользователя к команде
+     * @param $userID
+     * @param $teamID
+     * @return mixed
+     */
+    public function userBinding($userID, $teamID)
+    {
+        return TeamUser::create([
+            'team_id' => $teamID,
+            'user_id' => $userID,
+        ]);
     }
 
     /**
@@ -55,20 +96,19 @@ class TeamUserController extends Controller
      */
     public function validator(array $data)
     {
-
-//        $userByEmailID = User::where('email', $data['user-email'])->first()->id;
-//        dd($userByEmailID);
         $validator = Validator::make(
             $data,
             [
-                'externalUser-name' => 'sometimes|nullable|string|max:255|bail',
-                'externalUser-surname' => 'sometimes|nullable|string|max:255|bail',
+                'externalUser-name' => 'sometimes|nullable|string|max:255|bail|required_with:externalUser-surname',
+                'externalUser-surname' => 'sometimes|nullable|string|max:255|bail|required_with:externalUser-name',
                 'user-email' => [
                     'nullable', 'email', 'max:255', 'bail', 'exists:users,email',
                 ],
             ],
             [
                 'user-email.exists' => 'Пользователь не найден',
+                'externalUser-name.required_with' => 'Укажите имя',
+                'externalUser-surname.required_with' => 'Укажите Фамилию',
             ]
         );
 
@@ -91,7 +131,7 @@ class TeamUserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return void
      */
     public function show($id)
     {
@@ -102,7 +142,7 @@ class TeamUserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return void
      */
     public function edit($id)
     {
@@ -114,7 +154,7 @@ class TeamUserController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return Response
+     * @return void
      */
     public function update(Request $request, $id)
     {
@@ -124,11 +164,16 @@ class TeamUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        if ($request->get('deleteExternalUser')) {
+            $externalUser = ExternalUser::find($request->input('deleteExternalUser'));
+            $externalUser->delete();
+        }
+
+        return redirect('/personal/');
     }
 }
